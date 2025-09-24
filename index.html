@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF → JPG + AI/NLP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .dropzone{border:2px dashed #d0d5dd;border-radius:16px;padding:42px;text-align:center;background:#f8fafc;cursor:pointer;transition:.25s}
+    .dropzone.dragover{border-color:#0d6efd;background:#eef6ff}
+    .error-msg{color:#dc3545;display:none;margin-top:12px}
+    .success-msg{color:#198754;display:none;margin-top:12px}
+    .muted{color:#6c757d}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+    .card-rounded{border-radius:20px}
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+  <div class="row g-4 justify-content-center">
+
+    <!-- Converter Card -->
+    <div class="col-12 col-lg-5">
+      <div class="card shadow-lg p-4 card-rounded text-center">
+        <h3 class="fw-bold mb-1">PDF to JPG</h3>
+        <p class="muted mb-4">Convert PDF pages to images with Deep Learning enhancement.</p>
+
+        <!-- Dropzone -->
+        <div id="dz" class="dropzone mb-3">
+          <i class="bi bi-cloud-arrow-up fs-1 text-secondary"></i>
+          <p class="mb-1">Click or drag & drop your PDF</p>
+          <small class="muted">Accepted: .pdf (single file)</small>
+          <input type="file" id="pdfInput" accept=".pdf" hidden>
+        </div>
+
+        <!-- DL options -->
+        <div class="text-start mb-3">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="srChk">
+            <label class="form-check-label" for="srChk">Super-Resolution (AI upscaling)</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="denoiseChk">
+            <label class="form-check-label" for="denoiseChk">AI Denoise / Deartifact</label>
+          </div>
+          <label class="form-label">Scale</label>
+          <select id="scaleSel" class="form-select">
+            <option value="1">1× (original)</option>
+            <option value="2">2×</option>
+            <option value="3">3×</option>
+            <option value="4">4×</option>
+          </select>
+        </div>
+
+        <button id="convertBtn" class="btn btn-danger w-100">Convert to JPG</button>
+        <p id="convErr" class="error-msg">❌ Error converting. Try again.</p>
+        <p id="convOk" class="success-msg">✅ Converted! Downloading…</p>
+        <a id="dlZip" class="d-none"></a>
+      </div>
+    </div>
+
+    <!-- AI / NLP Card -->
+    <div class="col-12 col-lg-7">
+      <div class="card shadow-lg p-4 card-rounded">
+        <h4 class="fw-bold text-center mb-3">AI & NLP Tools</h4>
+
+        <!-- OCR row -->
+        <div class="row g-3 align-items-end">
+          <div class="col-md-8">
+            <label class="form-label">Extract Text (OCR from PDF)</label>
+            <div class="input-group">
+              <input type="file" id="ocrInput" class="form-control" accept=".pdf">
+              <button id="ocrBtn" class="btn btn-primary">OCR</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-text">Use after conversion or directly from PDF.</div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- NLP controls -->
+        <div class="mb-3">
+          <label class="form-label">Text for NLP</label>
+          <textarea id="nlpText" rows="6" class="form-control mono" placeholder="Paste OCR text here…"></textarea>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button id="sumBtn" class="btn btn-outline-secondary">Summarize</button>
+          <button id="kwBtn" class="btn btn-outline-secondary">Keywords</button>
+          <button id="sentBtn" class="btn btn-outline-secondary">Sentiment</button>
+          <div class="input-group" style="max-width: 480px;">
+            <input id="qaInput" class="form-control" placeholder="Ask a question about the text…">
+            <button id="qaBtn" class="btn btn-outline-dark">Ask</button>
+          </div>
+        </div>
+
+        <div id="nlpOut" class="mt-3 p-3 bg-light border rounded small mono" style="min-height: 96px; white-space: pre-wrap;"></div>
+
+        <p id="nlpErr" class="error-msg">❌ AI/NLP error. Please try again.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</html>
